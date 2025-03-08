@@ -93,7 +93,7 @@
         <?php } ?>
     </table>
 
-<p>Choose an action:</p>
+<h3>Choose an action to operate on the database:</h3>
 <ul>
     <li><a href="search.php">Search</a></li>
     <li><a href="update.php">Update</a></li>

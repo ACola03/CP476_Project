@@ -121,7 +121,6 @@
         $StudentID = isset($_POST["StudentID"]) ? trim(htmlspecialchars($_POST["StudentID"])) : "";
         $StudentName = isset($_POST["StudentName"]) ? trim(htmlspecialchars($_POST["StudentName"])) : "";
         $CourseCode = isset($_POST["CourseCode"]) ? trim(htmlspecialchars($_POST["CourseCode"])) : "";
-        $FinalGrade = isset($_POST["FinalGrade"]) ? trim(htmlspecialchars($_POST["FinalGrade"])) : "";
 
         # now merge/concatenate the statements to form an entire predicate (WHERE)
         
@@ -216,6 +215,60 @@
        $selectOutput = $stmt2->fetchAll();
     }
 
+    if ($_SESSION["QueryAction"] == "Update"){
+        # I should probably specify the types for each (after specialChars?)
+        $StudentID = isset($_POST["StudentID"]) ? trim(htmlspecialchars($_POST["StudentID"])) : "";
+        $CourseCode = isset($_POST["CourseCode"]) ? trim(htmlspecialchars($_POST["CourseCode"])) : "";
+        $Test1 = $_POST["Test1"];
+        $Test2 = $_POST["Test2"];
+        $Test3 = $_POST["Test3"];
+        $Exam =  $_POST["Exam"];
+
+        # =============================================
+        # /////////////////////////////////////////////
+
+        # Update the table
+
+        $finalQuery = "UPDATE coursetable 
+                       SET `Test 1` = ?, `Test 2` = ?, `Test 3` = ?, `Final Exam` = ? 
+                       WHERE `Student ID` = ? AND `Course Code` = ? ";
+
+        $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'pass123');
+        $stmt = $db->prepare($finalQuery);
+        
+        $stmt->bindValue(1, $Test1, type: PDO::PARAM_INT);
+        $stmt->bindValue(2, $Test2, type: PDO::PARAM_INT);
+        $stmt->bindValue(3, $Test3, type: PDO::PARAM_INT);
+        $stmt->bindValue(4, $Exam, type: PDO::PARAM_INT);
+        $stmt->bindValue(5, $StudentID, type: PDO::PARAM_INT);
+        $stmt->bindValue(6, $CourseCode, type: PDO::PARAM_STR);
+
+       $stmt->execute();
+    
+        # =============================================
+        # /////////////////////////////////////////////
+
+        # Populate final_grades
+        $stmt2 = $db -> prepare("
+        UPDATE final_grades FG
+        JOIN (
+            SELECT N.`Student ID`, C.`Course Code`, 
+            (0.2 * `Test 1` + 0.2 * `Test 2` + 0.2 * `Test 3` + 0.4 * `Final Exam`) AS 'Final Grade'
+            FROM cp476_project.coursetable C
+            JOIN cp476_project.nametable N ON C.`Student ID` = N.`Student ID`
+        ) AS NewGrades
+        ON FG.`Student ID` = NewGrades.`Student ID` AND FG.`Course Code` = NewGrades.`Course Code`
+        SET FG.`Final Grade` = NewGrades.`Final Grade`");
+
+        $stmt2 -> execute();
+
+        # Generate final grades (for display)
+        $stmt3 = $db -> prepare("SELECT * FROM final_grades");
+        $stmt3 -> execute();
+        $selectOutput = $stmt3->fetchAll();
+
+    }
+
     # =======================================================
     ?>
 
@@ -237,4 +290,11 @@
             </tr>
         <?php } ?>
     </table>
+
+<h3>Choose an action to operate on the database:</h3>
+<ul>
+    <li><a href="search.php">Search</a></li>
+    <li><a href="update.php">Update</a></li>
+    <li><a href="delete.php">Delete</a></li>
+</ul>
     

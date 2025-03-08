@@ -86,8 +86,5 @@ $_SESSION['QueryAction'] = "Search";
 </form>
 
 </body>
-
-<h3>NOTE: add the security checks (username set, etc..)</h3>
-
 </html>
 
