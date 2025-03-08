@@ -116,6 +116,106 @@
        $selectOutput = $stmt->fetchAll();
     }
 
+    if ($_SESSION["QueryAction"] == "Delete"){
+        # I should probably specify the types for each (after specialChars?)
+        $StudentID = isset($_POST["StudentID"]) ? trim(htmlspecialchars($_POST["StudentID"])) : "";
+        $StudentName = isset($_POST["StudentName"]) ? trim(htmlspecialchars($_POST["StudentName"])) : "";
+        $CourseCode = isset($_POST["CourseCode"]) ? trim(htmlspecialchars($_POST["CourseCode"])) : "";
+        $FinalGrade = isset($_POST["FinalGrade"]) ? trim(htmlspecialchars($_POST["FinalGrade"])) : "";
+
+        # now merge/concatenate the statements to form an entire predicate (WHERE)
+        
+        # prepare to create the predicate
+        $queryString = "";
+        $trueConditions = 0;
+        $conditions = [];
+
+        # =============================================
+        # /////////////////////////////////////////////
+
+        # only add if the string isn't empty
+        if (!empty($StudentID)) {
+
+            # First condition (no preceeding AND)
+            if ($trueConditions == 0){
+                $queryString = $queryString." `Student ID` = ?";
+            }
+
+            # This isn't needed but just for consistency
+            else{
+                $queryString = $queryString." AND `Student ID` = ?";
+            }
+
+            $conditions["StudentID"] = $StudentID; 
+            $trueConditions += 1;
+
+        }
+
+        if (!empty($StudentName)) {
+            # First condition (no preceeding AND)
+            if ($trueConditions == 0){
+                $queryString = $queryString." `Student Name` = ?";
+            }
+            
+            # If the preceeding features had specified conditions 
+            else{
+                $queryString = $queryString." AND `Student Name` = ?";
+            }
+
+            $conditions["StudentName"] = $StudentName; 
+            $trueConditions += 1;
+        }
+        if (!empty($CourseCode)) {
+            if ($trueConditions == 0){
+                $queryString = $queryString." `Course Code` = ?";
+            }
+            
+            # If the preceeding features had specified conditions 
+            else{
+                $queryString = $queryString." AND `Course Code` = ?";
+            }
+
+            $conditions["CourseCode"] = $CourseCode; 
+            $trueConditions += 1;
+        }
+        
+        # /////////////////////////////////////////////
+        # =============================================
+        # \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+        # if the string is empty we don't want to delete the entire table
+        $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'pass123');
+
+        if (!empty($queryString)) {
+
+            $finalQuery = "DELETE FROM final_grades";
+            $finalQuery .= " WHERE" . $queryString;
+
+            
+            $stmt = $db->prepare($finalQuery);
+            $index = 1;
+
+            foreach($conditions as $key => $value){
+                if ($key === "FinalGrade" || $key === "StudentID"){
+                    $stmt -> bindValue($index, $value, PDO::PARAM_INT);
+                }
+                else{
+                    $stmt -> bindValue($index, $value, PDO::PARAM_STR);
+                }
+                $index += 1;
+            }
+
+            # delete the rows
+            $stmt->execute();
+        }
+
+       # return the resulting dataset 
+       $stmt2 = $db->prepare("SELECT * FROM final_grades");
+       $stmt2->execute();
+       $selectOutput = $stmt2->fetchAll();
+    }
+
     # =======================================================
     ?>
 

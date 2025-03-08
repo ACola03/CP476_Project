@@ -18,7 +18,6 @@ $_SESSION['QueryAction'] = "Delete";
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,15 +29,14 @@ $_SESSION['QueryAction'] = "Delete";
 
 <h2>Final Grade: Delete Functionality</h2>
 <p>
-    The `Delete` functionality
-
-    The resulting query will be based on the Final Grades table. For clarity, <br>
-    all columns will be displayed since the combination of Student ID and <br>
-    Course Code is the primary key. Without these features, and the mention <br>
-    of Student Name, the results can, and will be misleading. <br>
+    The `Delete` functionality operates on the `Final Grades` table which was <br>
+    previously presented to the user. This operation is used to drop rows from <br>
+    this table based on the values of their features. For example, if a student <br>
+    no longer attends the school, or a course is no longer offered, after some <br>
+    period of time, these records are no longer needed and can be safely removed. 
 </p>
 
-<h3>Search for specific entries based on the following conditions:</h3>
+<h3>Delete specific entries based on the following conditions:</h3>
 <ol>
     <li>Student ID: the student's identification number</li>
     <ul>
@@ -56,16 +54,13 @@ $_SESSION['QueryAction'] = "Delete";
     <ul>
         <li>For example: WHERE `Course Code` = "CP465"</li>
     </ul>
-    <br>
-
-    <li>Final Grade: the student's final grade associated with that course</li>
-    <ul>
-        <li>For example: WHERE `Final Grade` >= 55</li>
-    </ul>
 </ol>
 
 <h3>Provide your search query below:</h3>
-<p>For simplicity, the features are handled separately.</p>
+<p>
+    For simplicity, the features are handled separately.<br>
+    Please submit a single entry for the fields you desire.
+</p>
 
 <form action="QueryResults.php" method="POST">
     <label>
@@ -79,17 +74,10 @@ $_SESSION['QueryAction'] = "Delete";
     <label>
         Course Code: <input type="text" name="CourseCode">
     </label>
-    <br>
-    <label>
-        Final Grade: <input type="text" name="FinalGrade">
-    </label>
     <br><br>
-    <input type="submit" value="Search">
+    <input type="submit" value="Delete">
 </form>
 
 </body>
-
-<h3>NOTE: add the security checks (username set, etc..)</h3>
-
 </html>
 
