@@ -15,7 +15,7 @@
 
     // Generate final grades (for display)
     try {
-        $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'pass123');
+        $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'Lahonto123#');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $stmt1 = $db->prepare("

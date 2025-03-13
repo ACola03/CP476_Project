@@ -98,7 +98,7 @@
             $finalQuery .= " WHERE" . $queryString;
         }
 
-        $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'pass123');
+        $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'Lahonto123#');
         $stmt = $db->prepare($finalQuery);
         $index = 1;
 
@@ -184,7 +184,7 @@
 
 
         # if the string is empty we don't want to delete the entire table
-        $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'pass123');
+        $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'Lahonto123#');
 
         if (!empty($queryString)) {
 
@@ -233,7 +233,7 @@
                        SET `Test 1` = ?, `Test 2` = ?, `Test 3` = ?, `Final Exam` = ? 
                        WHERE `Student ID` = ? AND `Course Code` = ? ";
 
-        $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'pass123');
+        $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'Lahonto123#');
         $stmt = $db->prepare($finalQuery);
         
         $stmt->bindValue(1, $Test1, type: PDO::PARAM_INT);
