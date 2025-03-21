@@ -52,7 +52,7 @@ if ($_SESSION["QueryAction"] == "Search") {
         $finalQuery .= " WHERE" . $queryString;
     }
 
-    $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'Lahonto123#');
+    $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'pass123');
     $stmt = $db->prepare($finalQuery);
     $index = 1;
 
@@ -92,7 +92,7 @@ if ($_SESSION["QueryAction"] == "Delete") {
         $trueConditions += 1;
     }
 
-    $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'Lahonto123#');
+    $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'pass123');
 
     if (!empty($queryString)) {
         $finalQuery = "DELETE FROM final_grades WHERE" . $queryString;
@@ -124,7 +124,7 @@ if ($_SESSION["QueryAction"] == "Update") {
                    SET `Test 1` = ?, `Test 2` = ?, `Test 3` = ?, `Final Exam` = ? 
                    WHERE `Student ID` = ? AND `Course Code` = ?";
 
-    $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'Lahonto123#');
+    $db = new PDO('mysql:host=localhost;dbname=cp476_project', 'root', 'pass123');
     $stmt = $db->prepare($finalQuery);
 
     $stmt->bindValue(1, $Test1, PDO::PARAM_INT);
