@@ -179,6 +179,7 @@ if ($_SESSION["QueryAction"] == "Update") {
             width: 80%;
             max-width: 800px;
             text-align: center;
+            overflow-x: auto;
         }
         .container h2 {
             margin-bottom: 20px;
